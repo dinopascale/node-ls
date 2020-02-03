@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    h1 Files in #{path}
+    ul
+        each file in files
+            li= file

@@ -1,8 +1,7 @@
 import { promises, Dirent } from 'fs';
-import { homedir } from 'os';
 
-function ls(path?: string): Promise<string[] | Buffer[] | Dirent[]> {
-    return promises.readdir(path || homedir())
+function ls(path: string): Promise<string[] | Buffer[] | Dirent[]> {
+    return promises.readdir(path)
 } 
 
 export default ls;
