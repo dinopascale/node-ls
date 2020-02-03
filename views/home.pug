@@ -4,4 +4,6 @@ block content
     h1 Files in #{path}
     ul
         each file in files
-            li= file
+            li
+                span.f-name #{file.name}
+                em.f-size #{file.size}b

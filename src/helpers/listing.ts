@@ -1,7 +1,7 @@
-import { promises, Dirent } from 'fs';
+import { promises as asyncFs, Dirent } from 'fs';
 
 function ls(path: string): Promise<string[] | Buffer[] | Dirent[]> {
-    return promises.readdir(path)
+    return asyncFs.readdir(path)
 } 
 
 export default ls;
