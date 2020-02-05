@@ -1,38 +1,24 @@
 import { Request, Response } from 'express';
-import ls from '../helpers/listing';
-import fileStats from '../helpers/stats';
 import { homedir } from 'os';
 import * as pt from 'path';
-import { Stats } from 'fs';
+import generateFileList from '../helpers/generateList';
 
 
 export const index = (homeDir: string = homedir()) =>  async (req: Request, res: Response) => {
 
-    const {path} = req;
+    const { path } = req;
     
-    if (!path) { res.send('scemo no path') }
+    if (!path) { return res.send('scemo no path'); }
     
     const completePath = pt.join(homeDir, path);
 
     try {
 
-        const filesArray = <string[]>await ls(completePath);
-
-        let filesWithStats: ({name: string, size: number} | undefined)[] = [];
-
-        if (filesArray.length === 0) {
-            filesWithStats = [];
-        } else {
-            const promises = filesArray.map(f => fileStats(completePath + '/' + f)
-            .then(stats => ({name: f, size: stats.size}))
-            .catch(err => undefined)
-        );
-            filesWithStats = await Promise.all(promises);
-        }
+        const files = await generateFileList(completePath);
 
         res.render('home', {
             title: completePath,
-            files: filesWithStats,
+            files,
             path: completePath,
         })
     } catch(e) {

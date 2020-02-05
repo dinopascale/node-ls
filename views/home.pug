@@ -5,5 +5,6 @@ block content
     ul
         each file in files
             li
-                span.f-name #{file.name}
-                em.f-size #{file.size}b
+                a(href=`/${file.name}`)
+                    span.f-name #{file.name}
+                    em.f-size #{file.size}

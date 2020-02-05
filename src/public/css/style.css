@@ -3,7 +3,7 @@
   font-size: 62.5%;
 }
 :root body {
-  margin: 0;
+  margin: 10px;
   width: 100%;
   height: 100%;
   font-size: 1.6rem;
@@ -24,7 +24,11 @@ ul {
 }
 ul li {
   flex: 1 0 30%;
-  padding: 8px 0;
+  padding: 8px 3px;
+}
+ul li a {
+  color: inherit;
+  text-decoration: none;
 }
 ul li .f-name {
   display: block;
