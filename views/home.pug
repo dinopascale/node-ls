@@ -1,6 +1,10 @@
 extends layout
+include mixins/_toolbar.pug
 
 block content
+
+    +toolbar('/')
+
     h1 Files in #{path}
     ul
         each file in files

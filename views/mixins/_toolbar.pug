@@ -1,0 +1,11 @@
+mixin toolbar(back)
+    .toolbar
+        .nav-actions
+            each action in [{icon: 'fas fa-home', path: '/'}, {icon: 'fas fa-arrow-left', path: back}]
+                a(class='action', href=action.path)
+                    i(class=action.icon)
+        
+        .logo
+            h1 node-ls
+
+        .nav-actions    
