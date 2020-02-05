@@ -4,8 +4,6 @@ import fileStats from '../helpers/stats';
 import { homedir } from 'os';
 
 
-
-
 export const index = (path: string = homedir()) => async (req: Request, res: Response) => {
 
     const filesArray = <string[]>await ls(path);

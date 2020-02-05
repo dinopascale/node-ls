@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import * as homeRoute from './routes/home';
+import * as folderRoute from './routes/folder';
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 app.get('/', homeRoute.index())
+app.get('/*', folderRoute.index())
 
 export default app;
