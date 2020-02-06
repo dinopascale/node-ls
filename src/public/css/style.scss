@@ -1,6 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Courier+Prime:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
 
-$font-family: 'Courier Prime', monospace;
+$font-family: 'Poppins', sans-serif;
+$primary: #ad1457;
+$primary-dark: #78002e;
+$primary-light: #e35183;
+$secondary: #fbc02d;
+$secondary-ligth: #fff263;
+$secondary-dark: #c49000;
 
 :root {
     font-size: 62.5%;
@@ -17,6 +23,7 @@ $font-family: 'Courier Prime', monospace;
       height: 100%;
       font-size: 1.6rem;
       font-family: $font-family;
+      letter-spacing: .09rem;
       background: #f5f5f5;
     }
 }
@@ -34,20 +41,26 @@ $font-family: 'Courier Prime', monospace;
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1000;
+  color: #9a9a9a;
   height: 100%;
-  width: 100px;
+  width: 120px;
   padding: 0px 16px;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: space-between;
+  background-color: #fafafa;
+  box-shadow: 0 0 27px 0 rgba(214, 231, 233, 0.52);
 
   .nav-actions {
-    flex: 1 0 33%;
+    flex: 1 0 auto;
+    margin-top: 16px;
     .action {
       width: 100%;
       margin: 8px 0;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
       text-decoration: none;
       text-align: center;
       cursor: pointer;
@@ -68,10 +81,10 @@ $font-family: 'Courier Prime', monospace;
   }
 
   .logo {
-    flex: 1 0 33%;
-    text-align: center;
+    flex: 0 1 auto;
     h1 {
       margin: 0;
+      margin-bottom: 16px;
       font-size: 2.4rem;
     }
   }
@@ -86,16 +99,20 @@ $font-family: 'Courier Prime', monospace;
 .content {
   position: relative;
   left: 150px;
-  max-height: 100%;
+  width: 100%;
 }
 
 .actual-path, .file-list {
-  padding: 0 24px;
-  max-width: 1280px;
+  padding: 0 120px;
   margin: 0 auto;
 }
 
 .actual-path {
+  height: 125px;
+  display: flex;
+  align-items: flex-end;
+  background-color: #ad1457;
+  color: #f1f1f1;
   h2 {
     margin: 8px 0;
   }
