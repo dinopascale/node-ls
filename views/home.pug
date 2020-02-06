@@ -5,10 +5,13 @@ block content
 
     +toolbar(backPath)
 
-    h1 Files in #{path}
-    ul
-        each file in files
-            li
-                a(href=`/${file.breadcrumb}`)
-                    span.f-name #{file.name}
-                    em.f-size #{file.size}
+    .content
+        .actual-path
+            h2 Path: #{path}
+        .file-list    
+            ul
+                each file in files
+                    li
+                        a(href=`/${file.breadcrumb}`)
+                            span.f-name #{file.name}
+                            em.f-size #{file.size}

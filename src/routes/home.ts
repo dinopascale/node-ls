@@ -11,7 +11,7 @@ export const index = (path?: string) => async (req: Request, res: Response) => {
         const files = await generateFileList(<string>path);
 
         res.render('home', {
-            title: 'Home',
+            title: 'NodeLs',
             files,
             path,
         })

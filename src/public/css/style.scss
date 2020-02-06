@@ -4,13 +4,15 @@ $font-family: 'Courier Prime', monospace;
 
 :root {
     font-size: 62.5%;
+    height: 100%;
+    overflow-x: hidden;
 
     html {
       margin: 0px;
     }
 
     body {
-      margin: 5px;
+      margin: 0px;
       width: 100%;
       height: 100%;
       font-size: 1.6rem;
@@ -21,24 +23,47 @@ $font-family: 'Courier Prime', monospace;
 
 .container {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 // TOOLBAR
 
 .toolbar {
-  padding: 8px 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100px;
+  padding: 0px 16px;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column;
   align-items: center;
   justify-content: space-between;
 
   .nav-actions {
     flex: 1 0 33%;
     .action {
-      margin: 0 8px;
-      font-size: 2.4rem;
+      width: 100%;
+      margin: 8px 0;
+      font-size: 1.8rem;
+      text-decoration: none;
+      text-align: center;
       cursor: pointer;
       color: inherit;
+      display: inline-block;
+      transform: scale(1);
+      transition: transform .15s;
+      &:hover {
+        transform: scale(1.1);
+      }
+      span {
+        margin-left: 12px;
+      }
+      i {
+        transform: translateY(0.1em)
+      }
     }
   }
 
@@ -50,40 +75,58 @@ $font-family: 'Courier Prime', monospace;
       font-size: 2.4rem;
     }
   }
+  
 }
 
 // STOP TOOLBAR
 
 
-// CONTAINER 
+// CONTAINER
+
+.content {
+  position: relative;
+  left: 150px;
+  max-height: 100%;
+}
+
+.actual-path, .file-list {
+  padding: 0 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.actual-path {
+  h2 {
+    margin: 8px 0;
+  }
+}
 
 
-
-
-ul {
-  list-style: none;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0;
-  padding: 0;
-
-  li {
-    flex: 1 0 30%;
-    padding: 8px 3px;
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .f-name {
-      display: block;
-    }
-    .f-size {
-      font-size: 1.3rem;
+.file-list {
+  ul {
+    list-style: none;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  
+    li {
+      flex: 0 0 100%;
+      padding: 8px 0px;
+  
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+  
+      .f-name {
+        display: block;
+      }
+      .f-size {
+        font-size: 1.3rem;
+      }
     }
   }
 }

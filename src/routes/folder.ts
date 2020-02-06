@@ -22,7 +22,7 @@ export const index = (homeDir?: string) =>  async (req: Request, res: Response) 
         const files = await generateFileList(completePath);
 
         res.render('home', {
-            title: completePath,
+            title: 'NodeLs' + path.replace(/\//g, ' - '),
             files,
             path: completePath,
             backPath
