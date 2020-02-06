@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
 import generateFileList from '../helpers/generateList';
-import { homedir } from 'os';
+import app from '../app';
 
-export const index = (path: string = homedir()) => async (req: Request, res: Response) => {
+export const index = (path?: string) => async (req: Request, res: Response) => {
+
+    path = path || app.get('homePath');
 
     try {
 
-        const files = await generateFileList(path);
+        const files = await generateFileList(<string>path);
 
         res.render('home', {
             title: 'Home',

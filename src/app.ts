@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import { homedir } from 'os';
 import { CacheList } from './helpers/cache';
 import * as homeRoute from './routes/home';
 import * as folderRoute from './routes/folder';
@@ -11,6 +12,7 @@ const cache = new CacheList();
 
 app.set('port', process.env.PORT || 3000);
 app.set('cache', cache);
+app.set('homePath', homedir())
 
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'pug');

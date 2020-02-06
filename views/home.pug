@@ -3,12 +3,12 @@ include mixins/_toolbar.pug
 
 block content
 
-    +toolbar('/')
+    +toolbar(backPath)
 
     h1 Files in #{path}
     ul
         each file in files
             li
-                a(href=`/${file.name}`)
+                a(href=`/${file.breadcrumb}`)
                     span.f-name #{file.name}
                     em.f-size #{file.size}
