@@ -24,7 +24,7 @@ $secondary-dark: #c49000;
       font-size: 1.6rem;
       font-family: $font-family;
       letter-spacing: .09rem;
-      background: #f5f5f5;
+      background: #eff1ef;
     }
 }
 
@@ -42,9 +42,9 @@ $secondary-dark: #c49000;
   top: 0;
   left: 0;
   z-index: 1000;
-  color: #9a9a9a;
+  color: #666;
   height: 100%;
-  width: 120px;
+  width: 30px;
   padding: 0px 16px;
   display: flex;
   flex-flow: column;
@@ -59,7 +59,7 @@ $secondary-dark: #c49000;
     .action {
       width: 100%;
       margin: 8px 0;
-      font-size: 1.6rem;
+      font-size: 2.0rem;
       letter-spacing: 1px;
       text-decoration: none;
       text-align: center;
@@ -98,7 +98,7 @@ $secondary-dark: #c49000;
 
 .content {
   position: relative;
-  left: 150px;
+  left: 30px;
   width: 100%;
 }
 
@@ -110,9 +110,8 @@ $secondary-dark: #c49000;
 .actual-path {
   height: 125px;
   display: flex;
+  color: #3a3a3a;
   align-items: flex-end;
-  background-color: #ad1457;
-  color: #f1f1f1;
   h2 {
     margin: 8px 0;
   }

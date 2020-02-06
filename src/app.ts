@@ -5,6 +5,7 @@ import { homedir } from 'os';
 import { CacheList } from './helpers/cache';
 import * as homeRoute from './routes/home';
 import * as folderRoute from './routes/folder';
+import * as filterRoute from './routes/fileList';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 app.get('/', homeRoute.index())
+app.get('/stream/:path', filterRoute.index)
 app.get('/*', folderRoute.index())
 
 export default app;

@@ -8,11 +8,11 @@ export const index = (path?: string) => async (req: Request, res: Response) => {
 
     try {
 
-        const files = await generateFileList(<string>path);
+        // const files = await generateFileList(<string>path);
 
         res.render('home', {
             title: 'NodeLs',
-            files,
+            // files,
             path,
         })
     } catch(e) {

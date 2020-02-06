@@ -1,11 +1,12 @@
+
 mixin toolbar(back)
     .toolbar
         .nav-actions
-            each action in [{icon: 'fas fa-home', path: '/', label: 'Home'}, {icon: 'fas fa-arrow-left', path: back, label: 'Back'}]
-                if back
+            if back
+                each action in [{icon: 'fas fa-home', path: '/', label: 'Home'}, {icon: 'fas fa-arrow-left', path: back, label: 'Back'}]
                     a(class='action', href=action.path)
                         i(class=action.icon)
-                        span #{action.label}
-        
-        .logo
-            h1 node-ls
+            else
+                each action in [{icon: 'fas fa-home', path: '/', label: 'Home'}]
+                    a(class='action', href=action.path)
+                        i(class=action.icon)
