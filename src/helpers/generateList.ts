@@ -12,7 +12,7 @@ export default async function generateFileList(path: string): Promise<({name: st
     } else {
         const promises = filesArray.map(f => fileStats(path + '/' + f)
         .then(stats => ({name: f, size: formatBytes(stats.size)}))
-        .catch(err => undefined)
+        .catch(err => ({name: f, size: 'no info'}))
     );
         filesWithStats = await Promise.all(promises);
     }
