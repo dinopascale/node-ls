@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 import generateFileList from '../helpers/generateList';
 import { homedir } from 'os';
-import app from '../app';
-import { CacheList } from '../helpers/cache';
-
 
 export const index = (path: string = homedir()) => async (req: Request, res: Response) => {
 
