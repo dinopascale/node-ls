@@ -9,6 +9,7 @@ export const index = (path?: string) => async (req: Request, res: Response) => {
 
         res.render('home', {
             title: 'NodeLs',
+            route: 'home',
             path,
         })
     } catch(e) {

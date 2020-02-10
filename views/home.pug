@@ -8,12 +8,7 @@ block content
     .content
         .actual-path
             h2 #{path}
-        .file-list  
-            //- ul
-            //-     each file in files
-            //-         li
-            //-             a(href=`/${file.breadcrumb}`)
-            //-                 span.f-name #{file.name}
-            //-                 em.f-size #{file.size}
+        .file-list(data-path=route)
 
-    script(src="/js/stream.js" type="text/javascript")        
+
+    script(src="/js/stream.js" type="text/javascript" defer)        

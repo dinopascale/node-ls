@@ -51,7 +51,7 @@ $secondary-dark: #c49000;
   align-items: center;
   justify-content: space-between;
   background-color: #fafafa;
-  box-shadow: 0 0 27px 0 rgba(214, 231, 233, 0.52);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
   .nav-actions {
     flex: 1 0 auto;
@@ -98,12 +98,12 @@ $secondary-dark: #c49000;
 
 .content {
   position: relative;
-  left: 30px;
+  left: 62px;
   width: 100%;
+  padding: 0 170px;
 }
 
 .actual-path, .file-list {
-  padding: 0 120px;
   margin: 0 auto;
 }
 
@@ -119,30 +119,37 @@ $secondary-dark: #c49000;
 
 
 .file-list {
-  ul {
-    list-style: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 4px;
+  background-color: #fafafa;
+  margin-bottom: 40px;
+
+  .row-file {
+    padding: 1em 2em;
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  
-    li {
-      flex: 0 0 100%;
-      padding: 8px 0px;
-  
+    justify-content: space-between;
+    text-decoration: none;
+    color: #444;
+    border-bottom:1px solid #dfdfdf;
+
+    .name {
+      flex: 1 0 50%;
+    }
+
+    .size {
+      flex: 1 0 10%;
+    }
+
+    .actions {
+      flex: 1 0 30%;
+      display: flex;
+      justify-content: flex-end;
+
       a {
         color: inherit;
-        text-decoration: none;
-      }
-  
-      .f-name {
-        display: block;
-      }
-      .f-size {
-        font-size: 1.3rem;
+        font-size: 2rem;
       }
     }
+    
   }
 }

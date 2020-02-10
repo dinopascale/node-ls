@@ -7,6 +7,7 @@ import { IFileListItem } from '../interfaces/file-list-item';
 import generateFileList from '../helpers/generateList';
 import { Subject, Subscription } from 'rxjs';
 import { bufferCount } from 'rxjs/operators';
+import { CacheList } from '../helpers/cache';
 
 class FolderSizeReadable extends Readable {
 
@@ -25,7 +26,9 @@ class FolderSizeReadable extends Readable {
             .asObservable()
             .pipe(bufferCount(options.highWaterMark || 5))
             .subscribe(
-                chunk => this.push(chunk),
+                chunk => {
+                    this.push(chunk)
+                },
                 err => this.push(null))
     }
 
@@ -63,6 +66,8 @@ class FolderSizeReadable extends Readable {
 export const index = async function (req: Request, res: Response) {
     const { path: tempPath } = req;
 
+    const cache: CacheList = app.get('cache');
+
     if (!tempPath) { return res.status(400).send({error: 'Please get stupidino'}); }
 
     const hDir = app.get('homePath');
@@ -71,17 +76,27 @@ export const index = async function (req: Request, res: Response) {
 
     const completePath = path === '/home' ? hDir : hDir + path;
 
+    const isCached = cache.isCached(completePath);
+
     // caching first
 
     // if cache exist return cache to stream
 
     // if cache not exist calculate
 
-    const files = await generateFileList(completePath);
+    const files = isCached ? cache.retrieve(completePath) : await generateFileList(completePath);
+
+    console.log('FILES', isCached, files);
 
     const r = new FolderSizeReadable(files, { objectMode: true, highWaterMark: 3});
     
     r
         .pipe(JSONStream.stringify(false))
         .pipe(res.set({'content-type': 'application/json'}));
+
+    r.on('data', (chunk) => {
+        !isCached && cache.insert(completePath, chunk, true)
+    })
+
+    r.on('end', () => {})
 }

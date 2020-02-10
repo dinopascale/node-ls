@@ -6,17 +6,27 @@ function createTableRow(file: {name: string, size: string, breadcrumb: string}):
 
     const div = document.createElement('div');
     div.innerHTML = `
-        <a href=${file.breadcrumb}>
-            <span>${file.name}</span>
-            <span>(${file.size})</span>
-        </a>
+        <div class="row-file elevation">
+            <span class="name">${file.name}</span>
+            <span class="size">${file.size}</span>
+            <span class="actions">
+                <a href=${file.breadcrumb}>
+                    <i class="fas fa-long-arrow-alt-right"></i>            
+                </a>    
+            </span>
+        </div>
     `;
     fileListContainer.appendChild(div);
 }
 
 async function handleLoaded() {
 
-    fetch('/stream/home')
+    if (!fileListContainer) { return; }
+
+    const path = fileListContainer.dataset.path;
+    console.log(path);
+
+    fetch(`/stream/${path}`)
         .then(response => response.body)
         .then(body => {
 

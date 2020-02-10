@@ -6,15 +6,16 @@ export class CacheList {
 
     constructor() {}
 
-    insert(path: string, fileList: (IFileListItem | undefined)[] ): void {
+    insert(path: string, fileList: (IFileListItem | undefined)[], isChunk: boolean = false ): void {
 
         if (!fileList) {
             return;
         }
 
-        if (this.cached[path]) { return; }
-        this.cached[path] = [...(fileList as IFileListItem[])];
-        console.log('UPDATED CACHE', Object.keys(this.cached));
+        if (this.cached[path] && !isChunk) { return; }
+
+
+        this.cached[path] = isChunk ? [...(this.cached[path] || []), ...(fileList as IFileListItem[])] : [...(fileList as IFileListItem[])];
     }
 
     retrieve(path: string): IFileListItem[] {
