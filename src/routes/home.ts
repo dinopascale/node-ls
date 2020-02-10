@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import generateFileList from '../helpers/generateList';
 import app from '../app';
 
 export const index = (path?: string) => async (req: Request, res: Response) => {
@@ -8,11 +7,8 @@ export const index = (path?: string) => async (req: Request, res: Response) => {
 
     try {
 
-        // const files = await generateFileList(<string>path);
-
         res.render('home', {
             title: 'NodeLs',
-            // files,
             path,
         })
     } catch(e) {

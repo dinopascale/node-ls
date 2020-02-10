@@ -1,52 +1,87 @@
 import { Request, Response } from 'express';
 import app from '../app';
-import {createReadStream} from 'fs';
-import * as p from 'path';
 const JSONStream = require('JSONStream');
 
 import { Readable, ReadableOptions } from 'stream';
 import { IFileListItem } from '../interfaces/file-list-item';
+import generateFileList from '../helpers/generateList';
+import { Subject, Subscription } from 'rxjs';
+import { bufferCount } from 'rxjs/operators';
 
 class FolderSizeReadable extends Readable {
 
-    data: IFileListItem[];
+    subj: Subject<IFileListItem>;
+    sub: Subscription;
 
-    constructor(data: IFileListItem[], options: ReadableOptions) {
+    data: any[];
+    filesLength: number = 0;
+
+    constructor(data: any[], options: ReadableOptions) {
         super(options);
         this.data = data;
+        this.filesLength = this.data.length;
+        this.subj = new Subject<IFileListItem>();
+        this.sub = this.subj
+            .asObservable()
+            .pipe(bufferCount(options.highWaterMark || 5))
+            .subscribe(
+                chunk => this.push(chunk),
+                err => this.push(null))
     }
 
-    _read(size: number) {
-        if (this.data.length) {
-            const chunk = this.data.slice(0, size);
-            this.data = this.data.slice(size, this.data.length);
-            this.push(chunk)
-        } else {
+    async _read(size: number) {
+        if (this.data.length < size) {
+            /*
+            * if last chunk of data is smaller than highWaterMark param
+            * we flush subject, complete and subscribe. Then we push to stream null and stop it
+            */
+
+            for await (let file of this.data) {
+                this.subj.next(file);
+            }
+
+            this.subj.complete();
+            this.sub.unsubscribe();
             this.push(null);
+            return;
+        }
+
+        if (this.data.length > 0) {
+
+            const chunk = this.data.slice(0, size);
+
+            for await (let file of chunk) {
+                this.subj.next(file);
+            }
+
+            this.data = this.data.slice(size, this.data.length);
+
         }
     }
 }
 
-
 export const index = async function (req: Request, res: Response) {
-    const { path } = req;
+    const { path: tempPath } = req;
+
+    if (!tempPath) { return res.status(400).send({error: 'Please get stupidino'}); }
+
     const hDir = app.get('homePath');
 
-    console.log(path, ' ma semo qui?')
+    let path = tempPath.replace('/stream', '');
 
-    if (!path) { return res.status(400).send({error: 'Please get stupidino'}); }
+    const completePath = path === '/home' ? hDir : hDir + path;
 
+    // caching first
 
-    const data = [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 4 }, { e: 5 }];
-    const r = new FolderSizeReadable(data, { objectMode: true, highWaterMark: 2});
+    // if cache exist return cache to stream
+
+    // if cache not exist calculate
+
+    const files = await generateFileList(completePath);
+
+    const r = new FolderSizeReadable(files, { objectMode: true, highWaterMark: 3});
     
     r
-        .pipe(JSONStream.stringify())
-        .pipe(res.header('content-type', 'application/json'));
-
-    // readab
-
-    // let stream = createReadStream('/home/dino/projects/node-ls/dist/public/data.txt');
-    // stream.pipe(res);
-    // stream.on('end', res.end.bind(res))
+        .pipe(JSONStream.stringify(false))
+        .pipe(res.set({'content-type': 'application/json'}));
 }

@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "get-folder-size": "^2.0.1",
     "pug": "^2.0.4",
+    "rxjs": "^6.5.4",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
