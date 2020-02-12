@@ -1,13 +1,19 @@
 const fileListContainer = document.querySelector('.file-list');
 
-function createTableRow(file: {name: string, size: string, breadcrumb: string}): void {
+function createTableRow(file: {name: string, size: string, breadcrumb: string, birth: number, isFolder: boolean}): void {
 
     if (!fileListContainer) { return; }
+
+    console.log(file)
 
     const div = document.createElement('div');
     div.innerHTML = `
         <div class="row-file elevation">
+            <span class="type">
+                <i class="${file.isFolder ? 'far fa-folder' : 'far fa-file'}"></i>
+            </span>
             <span class="name">${file.name}</span>
+            <span class="birth">${file.birth ? new Date(file.birth)?.toLocaleDateString() : '-'}</span>
             <span class="size">${file.size}</span>
             <span class="actions">
                 <a href=${file.breadcrumb}>
@@ -19,12 +25,30 @@ function createTableRow(file: {name: string, size: string, breadcrumb: string}):
     fileListContainer.appendChild(div);
 }
 
+function generateFileTableHeader(): void {
+    if (!fileListContainer) { return; }
+
+    const div = document.createElement('div');
+    div.innerHTML = `
+        <div class="row-file">
+            <span class="type header"></span>
+            <span class="name header">Name</span>
+            <span class="birth header">Created</span>
+            <span class="size header">Size</span>
+            <span class="actions header">Actions</span>
+        </div>
+    `;
+    fileListContainer.appendChild(div);
+}
+
+
 async function handleLoaded() {
 
     if (!fileListContainer) { return; }
 
-    const path = fileListContainer.dataset.path;
-    console.log(path);
+    const path = fileListContainer['dataset'].path;
+    generateFileTableHeader();
+
 
     fetch(`/stream/${path}`)
         .then(response => response.body)

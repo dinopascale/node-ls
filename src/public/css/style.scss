@@ -7,6 +7,7 @@ $primary-light: #e35183;
 $secondary: #fbc02d;
 $secondary-ligth: #fff263;
 $secondary-dark: #c49000;
+$color-border: #dfdfdf;
 
 :root {
     font-size: 62.5%;
@@ -24,7 +25,7 @@ $secondary-dark: #c49000;
       font-size: 1.6rem;
       font-family: $font-family;
       letter-spacing: .09rem;
-      background: #eff1ef;
+      background: #fff;
     }
 }
 
@@ -41,7 +42,6 @@ $secondary-dark: #c49000;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
   color: #666;
   height: 100%;
   width: 30px;
@@ -50,8 +50,7 @@ $secondary-dark: #c49000;
   flex-flow: column;
   align-items: center;
   justify-content: space-between;
-  background-color: #fafafa;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-right: 2px solid $color-border;
 
   .nav-actions {
     flex: 1 0 auto;
@@ -100,40 +99,52 @@ $secondary-dark: #c49000;
   position: relative;
   left: 62px;
   width: 100%;
-  padding: 0 170px;
-}
-
-.actual-path, .file-list {
-  margin: 0 auto;
+  padding: 0 70px;
 }
 
 .actual-path {
-  height: 125px;
-  display: flex;
   color: #3a3a3a;
-  align-items: flex-end;
-  h2 {
-    margin: 8px 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  h1 {
+    margin: 32px 0;
+  }
+
+  span {
+    margin-left: 16px;
   }
 }
 
 
 .file-list {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   border-radius: 4px;
-  background-color: #fafafa;
   margin-bottom: 40px;
+  max-width: 95%;
 
   .row-file {
-    padding: 1em 2em;
+    padding: 1em 0;
     display: flex;
     justify-content: space-between;
     text-decoration: none;
     color: #444;
     border-bottom:1px solid #dfdfdf;
 
+    .header {
+      font-weight: bold;
+    }
+
+    .type {
+      flex: 0 1 50px;
+      font-size: 1.8rem
+    }
+
     .name {
-      flex: 1 0 50%;
+      flex: 1 0 20%;
+    }
+
+    .birth {
+      flex: 1 0 20%;
     }
 
     .size {

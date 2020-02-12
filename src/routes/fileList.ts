@@ -20,6 +20,7 @@ class FolderSizeReadable extends Readable {
     constructor(data: any[], options: ReadableOptions) {
         super(options);
         this.data = data;
+
         this.filesLength = this.data.length;
         this.subj = new Subject<IFileListItem>();
         this.sub = this.subj
@@ -54,6 +55,7 @@ class FolderSizeReadable extends Readable {
             const chunk = this.data.slice(0, size);
 
             for await (let file of chunk) {
+                // console.log(file, ' FILE');
                 this.subj.next(file);
             }
 
@@ -85,8 +87,6 @@ export const index = async function (req: Request, res: Response) {
     // if cache not exist calculate
 
     const files = isCached ? cache.retrieve(completePath) : await generateFileList(completePath);
-
-    console.log('FILES', isCached, files);
 
     const r = new FolderSizeReadable(files, { objectMode: true, highWaterMark: 3});
     
