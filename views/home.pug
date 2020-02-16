@@ -3,11 +3,17 @@ include mixins/_toolbar.pug
 
 block content
 
-    +toolbar(backPath)
-
     .content
-        .actual-path
-            h1 
-                i(class="far fa-folder-open")
-                span #{path}
+        .toolbar
+            .actual-path
+                h1 
+                    //- i(class="far fa-folder-open")
+                    i(class="fas fa-spinner", id="stream-spinner")
+                    span #{path}
+
+            .global-actions
+                button#filter-hidden 
+                    i(class="far fa-eye")
+                    span Hidden Files
+                
         .file-list(data-path=route)

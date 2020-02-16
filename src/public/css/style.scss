@@ -39,55 +39,32 @@ $color-border: #dfdfdf;
 // TOOLBAR
 
 .toolbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  color: #666;
-  height: 100%;
-  width: 30px;
-  padding: 0px 16px;
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  flex-flow: row nowrap;
   justify-content: space-between;
-  border-right: 2px solid $color-border;
-
-  .nav-actions {
-    flex: 1 0 auto;
-    margin-top: 16px;
-    .action {
-      width: 100%;
-      margin: 8px 0;
-      font-size: 2.0rem;
-      letter-spacing: 1px;
-      text-decoration: none;
-      text-align: center;
-      cursor: pointer;
-      color: inherit;
-      display: inline-block;
-      transform: scale(1);
-      transition: transform .15s;
-      &:hover {
-        transform: scale(1.1);
-      }
-      span {
-        margin-left: 12px;
-      }
-      i {
-        transform: translateY(0.1em)
-      }
-    }
-  }
-
-  .logo {
-    flex: 0 1 auto;
-    h1 {
-      margin: 0;
-      margin-bottom: 16px;
-      font-size: 2.4rem;
-    }
-  }
+  align-items: center;
   
+  .global-actions {
+    button {
+      background: #fff9b1;
+      border: none;
+      color: #333;
+      padding: .75em 2em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background .2s ease-in-out;
+      outline: none;
+
+      &:hover {
+        background: $secondary-ligth;
+      }
+
+      i {
+        margin: 0 .5em 0 0;
+      }
+    }
+  }
 }
 
 // STOP TOOLBAR
@@ -97,9 +74,8 @@ $color-border: #dfdfdf;
 
 .content {
   position: relative;
-  left: 62px;
   width: 100%;
-  padding: 0 70px;
+  padding: 0 120px;
 }
 
 .actual-path {
@@ -111,27 +87,78 @@ $color-border: #dfdfdf;
     margin: 32px 0;
   }
 
+  .fa-spinner {
+    animation: spin 1.5s ease-in-out infinite;
+  }
+
   span {
     margin-left: 16px;
   }
 }
 
+  @keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+  }
+  @-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+  }
+
+// spinner
+
+// .loading-row {
+//   width: 100%;
+//   text-align: center;
+//   padding: 1.5em 0;
+
+//   #loading {
+//     display: inline-block;
+//     width: 50px;
+//     height: 50px;
+//     border: 3px solid rgba(0,0,0,0.3);
+//     border-radius: 50%;
+//     border-top-color: #000;
+//     animation: spin 1s ease-in-out infinite;
+//     -webkit-animation: spin 1s ease-in-out infinite;
+//   }
+  
+//   @keyframes spin {
+//     to { -webkit-transform: rotate(360deg); }
+//   }
+//   @-webkit-keyframes spin {
+//     to { -webkit-transform: rotate(360deg); }
+//   }
+// }
+
+// end spinner
 
 .file-list {
   border-radius: 4px;
   margin-bottom: 40px;
-  max-width: 95%;
 
   .row-file {
-    padding: 1em 0;
+    padding: .45em 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     text-decoration: none;
     color: #444;
+    // transform: translateX(0);
+    opacity: 1;
     border-bottom:1px solid #dfdfdf;
+    transition: all .2s ease-in-out;
+
+    &.filtered {
+      // transform: translateX(-100px);
+      opacity: 0;
+      overflow: hidden;
+      border: none;
+      padding: 0;
+      transition: all .2s ease-in-out;
+    }
 
     .cell, .header {
-      padding: 0 12px
+      padding: 0 12px;
+      word-break: break-all;
     }
 
     .header {
@@ -139,7 +166,7 @@ $color-border: #dfdfdf;
     }
 
     .type {
-      flex: 0 1 50px;
+      flex: 0 1 30px;
       font-size: 1.8rem
     }
 

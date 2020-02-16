@@ -14,7 +14,7 @@
   font-size: 1.6rem;
   font-family: "Poppins", sans-serif;
   letter-spacing: 0.09rem;
-  background: #eff1ef;
+  background: #fff;
 }
 .container {
   width: 100%;
@@ -23,94 +23,112 @@
   flex-flow: row nowrap;
 }
 .toolbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  color: #666;
-  height: 100%;
-  width: 30px;
-  padding: 0px 16px;
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  flex-flow: row nowrap;
   justify-content: space-between;
-  background-color: #fafafa;
-  box-shadow: 0 0 27px 0 rgba(214, 231, 233, 0.52);
+  align-items: center;
 }
-.toolbar .nav-actions {
-  flex: 1 0 auto;
-  margin-top: 16px;
-}
-.toolbar .nav-actions .action {
-  width: 100%;
-  margin: 8px 0;
-  font-size: 2rem;
-  letter-spacing: 1px;
-  text-decoration: none;
-  text-align: center;
+.toolbar .global-actions button {
+  background: #fff9b1;
+  border: none;
+  color: #333;
+  padding: 0.75em 2em;
+  text-transform: uppercase;
+  border-radius: 4px;
   cursor: pointer;
-  color: inherit;
-  display: inline-block;
-  transform: scale(1);
-  transition: transform 0.15s;
+  transition: background 0.2s ease-in-out;
+  outline: none;
 }
-.toolbar .nav-actions .action:hover {
-  transform: scale(1.1);
+.toolbar .global-actions button:hover {
+  background: #fff263;
 }
-.toolbar .nav-actions .action span {
-  margin-left: 12px;
-}
-.toolbar .nav-actions .action i {
-  transform: translateY(0.1em);
-}
-.toolbar .logo {
-  flex: 0 1 auto;
-}
-.toolbar .logo h1 {
-  margin: 0;
-  margin-bottom: 16px;
-  font-size: 2.4rem;
+.toolbar .global-actions button i {
+  margin: 0 0.5em 0 0;
 }
 .content {
   position: relative;
-  left: 30px;
   width: 100%;
-}
-.actual-path,
-.file-list {
   padding: 0 120px;
-  margin: 0 auto;
 }
 .actual-path {
-  height: 125px;
-  display: flex;
   color: #3a3a3a;
-  align-items: flex-end;
-}
-.actual-path h2 {
-  margin: 8px 0;
-}
-.file-list ul {
-  list-style: none;
   display: flex;
-  flex-flow: row wrap;
   justify-content: flex-start;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  align-items: center;
 }
-.file-list ul li {
-  flex: 0 0 100%;
-  padding: 8px 0px;
+.actual-path h1 {
+  margin: 32px 0;
 }
-.file-list ul li a {
-  color: inherit;
+.actual-path .fa-spinner {
+  animation: spin 1.5s ease-in-out infinite;
+}
+.actual-path span {
+  margin-left: 16px;
+}
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.file-list {
+  border-radius: 4px;
+  margin-bottom: 40px;
+}
+.file-list .row-file {
+  padding: 0.45em 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-decoration: none;
+  color: #444;
+  opacity: 1;
+  border-bottom: 1px solid #dfdfdf;
+  transition: all 0.2s ease-in-out;
 }
-.file-list ul li .f-name {
-  display: block;
+.file-list .row-file.filtered {
+  opacity: 0;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
 }
-.file-list ul li .f-size {
-  font-size: 1.3rem;
+.file-list .row-file .cell,
+.file-list .row-file .header {
+  padding: 0 12px;
+  word-break: break-all;
+}
+.file-list .row-file .header {
+  font-weight: bold;
+}
+.file-list .row-file .type {
+  flex: 0 1 30px;
+  font-size: 1.8rem;
+}
+.file-list .row-file .name {
+  flex: 0 0 20%;
+}
+.file-list .row-file .name p {
+  margin: 0;
+}
+.file-list .row-file .birth,
+.file-list .row-file .modified,
+.file-list .row-file .access {
+  flex: 0 0 15%;
+}
+.file-list .row-file .size {
+  flex: 0 0 10%;
+}
+.file-list .row-file .actions {
+  flex: 1 0 10%;
+  display: flex;
+  justify-content: flex-end;
+}
+.file-list .row-file .actions a {
+  color: inherit;
+  font-size: 2rem;
 }

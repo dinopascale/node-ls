@@ -1,4 +1,6 @@
-const fileListContainer = document.querySelector('.file-list');
+const fileListContainer: HTMLElement | null = document.querySelector('.file-list');
+const btnFilterHiddenFile = document.querySelector('#filter-hidden');
+const streamSpinner = document.querySelector('#stream-spinner');
 
 interface IFileItem {
     name: string;
@@ -15,24 +17,22 @@ function createTableRow(file: IFileItem): void {
     if (!fileListContainer) { return; }
 
     const div = document.createElement('div');
+    div.classList.add('row-file', 'files');
+    div.setAttribute('data-fname', file.name);
     div.innerHTML = `
-        <div class="row-file elevation">
-            <span class="type cell">
-                <i class="${file.isFolder ? 'far fa-folder' : 'far fa-file'}"></i>
-            </span>
-            <span class="name cell">
-                <p>${file.name}</p>
-            </span>
-            <span class="birth cell">${file.birth ? new Date(file.birth)?.toLocaleDateString() : '-'}</span>
-            <span class="modified cell">${file.modified ? new Date(file.modified)?.toLocaleDateString() : '-'}</span>
-            <span class="access cell">${file.lastAccess ? new Date(file.lastAccess)?.toLocaleDateString() : '-'}</span>
-            <span class="size cell">${file.size}</span>
-            <span class="actions cell">
-                <a href=${file.breadcrumb}>
-                    <i class="fas fa-long-arrow-alt-right"></i>            
-                </a>    
-            </span>
-        </div>
+        <span class="type cell">
+            <i class="${file.isFolder ? 'far fa-folder' : 'far fa-file'}"></i>
+        </span>
+        <span class="name cell">
+            <p>${file.name}</p>
+        </span>
+        <span class="birth cell">${file.birth ? new Date(file.birth)?.toLocaleDateString() : '-'}</span>
+        <span class="modified cell">${file.modified ? new Date(file.modified)?.toLocaleDateString() : '-'}</span>
+        <span class="access cell">${file.lastAccess ? new Date(file.lastAccess)?.toLocaleDateString() : '-'}</span>
+        <span class="size cell">${file.size}</span>
+        <span class="actions cell">
+            ${file.isFolder ? `<a href="./${file.breadcrumb}"><i class="fas fa-long-arrow-alt-right"></i></a>` : ''}
+        </span>
     `;
     fileListContainer.appendChild(div);
 }
@@ -55,12 +55,90 @@ function generateFileTableHeader(): void {
     fileListContainer.appendChild(div);
 }
 
+function staggeringAnimation(rows: NodeListOf<Element>): void {
+
+    function getToggleItemFiltered( i: number ) {
+        var item = rows[i];
+        return function() {
+          const toggled = item.classList.toggle('filtered');
+          item.addEventListener('transitionend', () => item.setAttribute('style', `height: ${toggled ? '0' : 'auto'}`))
+        }
+      }
+
+    for (let i = 0; i < rows.length; i++) {
+
+        const fname = rows[i].getAttribute('data-fname');
+
+        if (fname?.startsWith('.')) {
+            const toggleItemFiltered = getToggleItemFiltered(i);
+            setTimeout( toggleItemFiltered, i * 150 );
+        }
+    }
+}
+
+function changeIcon(el: Element | null | undefined, newClass: string, oldClass: string): void {
+    console.log(el);
+
+    if (el?.classList.contains(oldClass)) { el.classList.remove(oldClass); el.classList.add(newClass); }
+    else { el?.classList.add(oldClass); el?.classList.remove(newClass); }
+
+}
+
+
+function handleFilterHiddenFile(ev: Event): void {
+    const filterIcon = btnFilterHiddenFile?.querySelector('i');
+    changeIcon(filterIcon, 'fa-eye-slash', 'fa-eye')
+
+    const rows = document.querySelectorAll('div[data-fname]')
+    staggeringAnimation(rows);
+}
+
+function handleAllFileDownloaded(): void {
+    streamSpinner?.classList.remove('fas', 'fa-spinner');
+    streamSpinner?.classList.add('far', 'fa-folder-open');
+}
+
+// function createSpinner(parentElement: Element | null | undefined): Element {
+//     const loadingRow = document.createElement('div');
+//     loadingRow.classList.add('loading-row');
+//     const spinner = document.createElement('div');
+//     spinner.setAttribute('id', 'loading');
+
+//     loadingRow.appendChild(spinner);
+//     parentElement?.appendChild(loadingRow);
+
+//     return loadingRow;
+// }
+
+// function removeSpinner(parentElement: Element | null | undefined, loadingRow: Element): void {
+//     parentElement?.removeChild(loadingRow);
+// }
+
+class Counter {
+
+    private total: number = 0;
+    private count: number = 0;
+
+    constructor(private domEl: Element) {}
+
+    setTotal(n: number) {
+        if (!this.total) {
+            this.total = n;
+            this.domEl.textContent = `files analyzed: 0/${n}`;
+        }
+    }
+
+    updateCounter(n: number) {
+        this.count+=n;
+        this.domEl.textContent = `files analyzed: ${this.count}/${this.total}`;
+    }
+}
 
 async function handleLoaded() {
 
     if (!fileListContainer) { return; }
 
-    const path = fileListContainer['dataset'].path;
+    const path = (fileListContainer as HTMLElement).dataset.path;
     generateFileTableHeader();
 
 
@@ -86,9 +164,9 @@ async function handleLoaded() {
                             const chunkString = new TextDecoder().decode(value).trim().split('\n');
 
                             chunkString.forEach(string => {
-                                console.log(string);
-                                const json = JSON.parse(string);
-                                json.forEach(createTableRow)
+                                const {chunk, streamLength} = JSON.parse(string);
+                                
+                                chunk.forEach(createTableRow)
                             })
                         } catch(e) {
                             console.log(e)
@@ -96,6 +174,9 @@ async function handleLoaded() {
                         }
 
                     }
+
+                    btnFilterHiddenFile?.addEventListener('click', handleFilterHiddenFile);
+                    handleAllFileDownloaded();
 
                     controller.close();
                     reader.releaseLock();
@@ -105,4 +186,6 @@ async function handleLoaded() {
 
 }
 
-window.onload = handleLoaded;
+window.onload = function() {
+    this.handleLoaded();
+};

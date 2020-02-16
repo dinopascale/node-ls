@@ -28,7 +28,7 @@ class FolderSizeReadable extends Readable {
             .pipe(bufferCount(options.highWaterMark || 5))
             .subscribe(
                 chunk => {
-                    this.push(chunk)
+                    this.push({chunk, streamLength: this.filesLength})
                 },
                 err => this.push(null))
     }
@@ -78,12 +78,6 @@ export const index = async function (req: Request, res: Response) {
 
     const isCached = cache.isCached(completePath);
 
-    // caching first
-
-    // if cache exist return cache to stream
-
-    // if cache not exist calculate
-
     const files = isCached ? cache.retrieve(completePath) : await generateFileList(completePath);
 
     const r = new FolderSizeReadable(files, { objectMode: true, highWaterMark: 3});
@@ -92,7 +86,7 @@ export const index = async function (req: Request, res: Response) {
         .pipe(JSONStream.stringify(false))
         .pipe(res.set({'content-type': 'application/json'}));
 
-    r.on('data', (chunk) => {
+    r.on('data', ({chunk, streamLength}) => {
         !isCached && cache.insert(completePath, chunk, true)
     })
 

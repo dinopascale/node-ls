@@ -15,13 +15,14 @@ export default async function generateFileList(path: string): Promise<(IFileList
     if (filesArray.length === 0) { 
         result = []; 
     } else { 
-        const basePath = path + '/'; 
+        const basePath = path + '/';
+        const lastFolder = path === app.get('homePath') ? path : path.split('/').pop();
         result = <Promise<IFileListItem>[]>filesArray.map(f => fileStats(basePath + f)
             .then(stats => {
                 return {
                     name: f,
                     size: formatBytes(stats?.size),
-                    breadcrumb: generateBreadcrumb(app.get('homePath'),basePath + f),
+                    breadcrumb: generateBreadcrumb(app.get('homePath'), lastFolder + '/' + f),
                     birth: stats?.birthtimeMs,
                     modified: stats?.mtimeMs,
                     lastAccess: stats?.atimeMs,
