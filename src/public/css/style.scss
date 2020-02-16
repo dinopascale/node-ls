@@ -96,40 +96,12 @@ $color-border: #dfdfdf;
   }
 }
 
-  @keyframes spin {
-    to { -webkit-transform: rotate(360deg); }
-  }
-  @-webkit-keyframes spin {
-    to { -webkit-transform: rotate(360deg); }
-  }
-
-// spinner
-
-// .loading-row {
-//   width: 100%;
-//   text-align: center;
-//   padding: 1.5em 0;
-
-//   #loading {
-//     display: inline-block;
-//     width: 50px;
-//     height: 50px;
-//     border: 3px solid rgba(0,0,0,0.3);
-//     border-radius: 50%;
-//     border-top-color: #000;
-//     animation: spin 1s ease-in-out infinite;
-//     -webkit-animation: spin 1s ease-in-out infinite;
-//   }
-  
-//   @keyframes spin {
-//     to { -webkit-transform: rotate(360deg); }
-//   }
-//   @-webkit-keyframes spin {
-//     to { -webkit-transform: rotate(360deg); }
-//   }
-// }
-
-// end spinner
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
 
 .file-list {
   border-radius: 4px;
@@ -142,13 +114,11 @@ $color-border: #dfdfdf;
     align-items: center;
     text-decoration: none;
     color: #444;
-    // transform: translateX(0);
     opacity: 1;
     border-bottom:1px solid #dfdfdf;
     transition: all .2s ease-in-out;
 
     &.filtered {
-      // transform: translateX(-100px);
       opacity: 0;
       overflow: hidden;
       border: none;
