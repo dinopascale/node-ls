@@ -130,6 +130,10 @@ $color-border: #dfdfdf;
     color: #444;
     border-bottom:1px solid #dfdfdf;
 
+    .cell, .header {
+      padding: 0 12px
+    }
+
     .header {
       font-weight: bold;
     }
@@ -140,19 +144,23 @@ $color-border: #dfdfdf;
     }
 
     .name {
-      flex: 1 0 20%;
+      flex: 0 0 20%;
+
+      p {
+        margin: 0;
+      }
     }
 
-    .birth {
-      flex: 1 0 20%;
+    .birth, .modified, .access {
+      flex: 0 0 15%;
     }
 
     .size {
-      flex: 1 0 10%;
+      flex: 0 0 10%;
     }
 
     .actions {
-      flex: 1 0 30%;
+      flex: 1 0 10%;
       display: flex;
       justify-content: flex-end;
 

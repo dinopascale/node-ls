@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 app.get('/', homeRoute.index())
-app.get('/stream/:path', filterRoute.index)
+app.get('/stream', filterRoute.index)
 app.get('/*', folderRoute.index())
 
 export default app;

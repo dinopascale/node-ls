@@ -23,6 +23,8 @@ export default async function generateFileList(path: string): Promise<(IFileList
                     size: formatBytes(stats?.size),
                     breadcrumb: generateBreadcrumb(app.get('homePath'),basePath + f),
                     birth: stats?.birthtimeMs,
+                    modified: stats?.mtimeMs,
+                    lastAccess: stats?.atimeMs,
                     isFolder: stats?.isFolder
                 }
             })

@@ -66,17 +66,15 @@ class FolderSizeReadable extends Readable {
 }
 
 export const index = async function (req: Request, res: Response) {
-    const { path: tempPath } = req;
+    const { path } = req.query;
 
     const cache: CacheList = app.get('cache');
 
-    if (!tempPath) { return res.status(400).send({error: 'Please get stupidino'}); }
+    if (!path) { return res.status(400).send({error: 'Please get stupidino'}); }
 
     const hDir = app.get('homePath');
 
-    let path = tempPath.replace('/stream', '');
-
-    const completePath = path === '/home' ? hDir : hDir + path;
+    const completePath = path === 'home' ? hDir : hDir + '/' + path;
 
     const isCached = cache.isCached(completePath);
 
