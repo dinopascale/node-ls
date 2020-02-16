@@ -98,42 +98,6 @@ function handleAllFileDownloaded(): void {
     streamSpinner?.classList.add('far', 'fa-folder-open');
 }
 
-// function createSpinner(parentElement: Element | null | undefined): Element {
-//     const loadingRow = document.createElement('div');
-//     loadingRow.classList.add('loading-row');
-//     const spinner = document.createElement('div');
-//     spinner.setAttribute('id', 'loading');
-
-//     loadingRow.appendChild(spinner);
-//     parentElement?.appendChild(loadingRow);
-
-//     return loadingRow;
-// }
-
-// function removeSpinner(parentElement: Element | null | undefined, loadingRow: Element): void {
-//     parentElement?.removeChild(loadingRow);
-// }
-
-class Counter {
-
-    private total: number = 0;
-    private count: number = 0;
-
-    constructor(private domEl: Element) {}
-
-    setTotal(n: number) {
-        if (!this.total) {
-            this.total = n;
-            this.domEl.textContent = `files analyzed: 0/${n}`;
-        }
-    }
-
-    updateCounter(n: number) {
-        this.count+=n;
-        this.domEl.textContent = `files analyzed: ${this.count}/${this.total}`;
-    }
-}
-
 async function handleLoaded() {
 
     if (!fileListContainer) { return; }
