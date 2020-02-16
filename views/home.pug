@@ -1,5 +1,4 @@
 extends layout
-include mixins/_toolbar.pug
 
 block content
 
@@ -7,7 +6,6 @@ block content
         .toolbar
             .actual-path
                 h1 
-                    //- i(class="far fa-folder-open")
                     i(class="fas fa-spinner", id="stream-spinner")
                     span #{path}
 
@@ -16,4 +14,4 @@ block content
                     i(class="far fa-eye")
                     span Hidden Files
                 
-        .file-list(data-path=route)
+        .file-list(data-path=route, data-back=backPath)

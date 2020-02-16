@@ -55,6 +55,27 @@ function generateFileTableHeader(): void {
     fileListContainer.appendChild(div);
 }
 
+function generateFileTableBackRow(backPath: string | undefined): void {
+    if (!fileListContainer) { return; }
+
+    const div = document.createElement('div');
+    div.classList.add('row-file', 'files');
+    div.innerHTML = `
+            <span class="type cell">
+                <i class="far fa-folder"></i>
+            </span>
+            <span class="name cell">...</span>
+            <span class="birth cell"></span>
+            <span class="modified cell"></span>
+            <span class="access cell"></span> 
+            <span class="size cell"></span>
+            <span class="actions cell">
+                <a href="${backPath || '/'}"><i class="fas fa-long-arrow-alt-left"></i></a> 
+            </span>
+    `;
+    fileListContainer.appendChild(div);
+}
+
 function staggeringAnimation(rows: NodeListOf<Element>): void {
 
     function getToggleItemFiltered( i: number ) {
@@ -102,8 +123,10 @@ async function handleLoaded() {
 
     if (!fileListContainer) { return; }
 
-    const path = (fileListContainer as HTMLElement).dataset.path;
+    const {path, back} = (fileListContainer as HTMLElement).dataset;
+
     generateFileTableHeader();
+    if (path !== 'home') generateFileTableBackRow(back);
 
 
     fetch(`/stream?path=${path}`)
