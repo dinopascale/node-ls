@@ -27,4 +27,10 @@ export class CacheList {
         return Object.keys(this.cached).includes(path);
     }
 
+    invalidatePath(path: string): void {
+        if(this.isCached(path)) {
+            delete this.cached[path];
+        }
+    }
+
 }

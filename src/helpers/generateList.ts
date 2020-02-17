@@ -4,7 +4,19 @@ import ls from './listing';
 import app from '../app';
 import { IFileListItem } from '../interfaces/file-list-item';
 import {generateBreadcrumb} from './generateLink';
+import {IFileStats} from '../interfaces/file-stats';
 
+export function generateStatsForClient(stats: IFileStats | undefined, f: string, lastFolder: string | undefined): IFileListItem {
+    return {
+        name: f,
+        size: formatBytes(stats?.size),
+        breadcrumb: generateBreadcrumb(app.get('homePath'), lastFolder + '/' + f),
+        birth: stats?.birthtimeMs,
+        modified: stats?.mtimeMs,
+        lastAccess: stats?.atimeMs,
+        isFolder: stats?.isFolder
+    }
+}
 
 export default async function generateFileList(path: string): Promise<(IFileListItem | undefined | Promise<IFileListItem>)[]> {
 
@@ -18,17 +30,7 @@ export default async function generateFileList(path: string): Promise<(IFileList
         const basePath = path + '/';
         const lastFolder = path === app.get('homePath') ? path : path.split('/').pop();
         result = <Promise<IFileListItem>[]>filesArray.map(f => fileStats(basePath + f)
-            .then(stats => {
-                return {
-                    name: f,
-                    size: formatBytes(stats?.size),
-                    breadcrumb: generateBreadcrumb(app.get('homePath'), lastFolder + '/' + f),
-                    birth: stats?.birthtimeMs,
-                    modified: stats?.mtimeMs,
-                    lastAccess: stats?.atimeMs,
-                    isFolder: stats?.isFolder
-                }
-            })
+            .then(stats => generateStatsForClient(stats, f, lastFolder))
             .catch((statsWithoutSize) => {
                 console.log('ERROR ', statsWithoutSize, ' file ', f);
                 // console.log('perchè anche qui')

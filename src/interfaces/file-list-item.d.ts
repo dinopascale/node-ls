@@ -4,6 +4,6 @@ export interface IFileListItem {
     birth?: number;
     modified?: number;
     lastAccess?: number;
-    isDirectory?: boolean;
+    isFolder?: boolean;
     breadcrumb: string;
 }

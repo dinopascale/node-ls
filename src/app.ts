@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', homeRoute.index())
 app.get('/stream', filterRoute.index)
-app.get('/*', folderRoute.index())
+app.get('/folder/create', folderRoute.createFolder)
+app.get('/*', folderRoute.getFolder())
 
 export default app;

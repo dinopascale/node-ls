@@ -29,6 +29,10 @@ $color-border: #dfdfdf;
     }
 }
 
+.hidden {
+  opacity: 0;
+}
+
 .container {
   width: 100%;
   height: 100%;
@@ -45,16 +49,25 @@ $color-border: #dfdfdf;
   align-items: center;
   
   .global-actions {
+
+    display: flex;
+    justify-content: space-between;
+
     button {
-      background: #fff9b1;
+      background: #fff;
       border: none;
-      color: #333;
+      color: #555;
       padding: .75em 2em;
+      margin: 0 .5em;
       text-transform: uppercase;
       border-radius: 4px;
       cursor: pointer;
-      transition: background .2s ease-in-out;
+      transition: all .2s ease-in-out;
       outline: none;
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       &:hover {
         background: $secondary-ligth;
@@ -103,9 +116,11 @@ $color-border: #dfdfdf;
   to { -webkit-transform: rotate(360deg); }
 }
 
+
 .file-list {
   border-radius: 4px;
   margin-bottom: 40px;
+  position: relative;
 
   .row-file {
     padding: .45em 0;
@@ -118,12 +133,17 @@ $color-border: #dfdfdf;
     border-bottom:1px solid #dfdfdf;
     transition: all .2s ease-in-out;
 
-    &.filtered {
+    &.new {
+      background: lighten($color: $secondary-ligth, $amount: 25%);
+    }
+
+    &.closed {
       opacity: 0;
       overflow: hidden;
       border: none;
       padding: 0;
       transition: all .2s ease-in-out;
+      height: 0;
     }
 
     .cell, .header {
@@ -146,6 +166,14 @@ $color-border: #dfdfdf;
       p {
         margin: 0;
       }
+
+      input {
+        border: none;
+        font-family: $font-family;
+        outline: none;
+        background: #f1f1f1;
+        padding: .4em 0em;
+      }
     }
 
     .birth, .modified, .access {
@@ -164,6 +192,17 @@ $color-border: #dfdfdf;
       a {
         color: inherit;
         font-size: 2rem;
+      }
+      
+      .fa-check {
+        color: green;
+        margin: 0 1em;
+        cursor: pointer;
+      }
+
+      .fa-times {
+        color: red;
+        cursor: pointer;
       }
     }
     

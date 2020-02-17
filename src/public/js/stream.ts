@@ -1,6 +1,14 @@
 const fileListContainer: HTMLElement | null = document.querySelector('.file-list');
-const btnFilterHiddenFile = document.querySelector('#filter-hidden');
+const btnFilterHiddenFile = document.querySelector('#filter-hidden-btn');
+const btnNewFolder = document.querySelector('#new-folder-btn')
 const streamSpinner = document.querySelector('#stream-spinner');
+let path: string | undefined;
+let back: string | undefined;
+let newFolderRow: HTMLElement | null;
+let backRow: HTMLElement | null;
+let confirmNew: HTMLElement | null;
+let dismissNew: HTMLElement | null;
+let inputNewFolderName: HTMLInputElement | null;
 
 interface IFileItem {
     name: string;
@@ -59,6 +67,7 @@ function generateFileTableBackRow(backPath: string | undefined): void {
     if (!fileListContainer) { return; }
 
     const div = document.createElement('div');
+    div.setAttribute('id', 'back-row')
     div.classList.add('row-file', 'files');
     div.innerHTML = `
             <span class="type cell">
@@ -76,12 +85,46 @@ function generateFileTableBackRow(backPath: string | undefined): void {
     fileListContainer.appendChild(div);
 }
 
+function generateFileTableNew(): void {
+    if (!fileListContainer) { return; }
+
+    const div = document.createElement('div');
+    div.setAttribute('id', 'new-folder-row')
+    div.classList.add('row-file', 'files', 'closed', 'new');
+    div.innerHTML = `
+            <span class="type cell">
+                <i class="far fa-folder-open"></i>
+            </span>
+            <span class="name cell">
+                <input placeholder="Name New Folder" type="text / class="name-new-folder" id="new-folder-input">
+            </span>
+            <span class="birth cell"></span>
+            <span class="modified cell"></span>
+            <span class="access cell"></span> 
+            <span class="size cell"></span>
+            <span class="actions cell">
+                <i class="fas fa-check" id="confirm-new"></i>
+                <i class="fas fa-times" id="dismiss-new"></i>
+            </span>
+    `;
+    fileListContainer.appendChild(div);
+
+    inputNewFolderName = inputNewFolderName || document.querySelector('#new-folder-input');
+
+    confirmNew = confirmNew || document.querySelector('#confirm-new');
+    confirmNew?.addEventListener('click', handleConfirmNewFolder);
+
+    dismissNew = dismissNew || document.querySelector('#dismiss-new');
+    dismissNew?.addEventListener('click', handleDismissNewFolder);
+
+}
+
 function staggeringAnimation(rows: NodeListOf<Element>): void {
 
     function getToggleItemFiltered( i: number ) {
         var item = rows[i];
         return function() {
-          const toggled = item.classList.toggle('filtered');
+          const toggled = item.classList.toggle('closed');
           item.addEventListener('transitionend', () => item.setAttribute('style', `height: ${toggled ? '0' : 'auto'}`))
         }
       }
@@ -105,6 +148,11 @@ function changeIcon(el: Element | null | undefined, newClass: string, oldClass: 
 
 }
 
+function toggleVisibilityRow(el: Element | null): void {
+    if (!el) { return; }
+    el.classList.toggle('closed');
+}
+
 
 function handleFilterHiddenFile(ev: Event): void {
     const filterIcon = btnFilterHiddenFile?.querySelector('i');
@@ -119,15 +167,59 @@ function handleAllFileDownloaded(): void {
     streamSpinner?.classList.add('far', 'fa-folder-open');
 }
 
+function handleNewFolder(): void {
+    newFolderRow = !newFolderRow ? document.querySelector('#new-folder-row') : newFolderRow;
+    backRow = !backRow ? document.querySelector('#back-row') : backRow;
+
+    btnNewFolder?.classList.toggle('hidden');
+
+    toggleVisibilityRow(backRow);
+    toggleVisibilityRow(newFolderRow);
+    inputNewFolderName?.focus();
+}
+
+async function handleConfirmNewFolder(): Promise<void> {
+    const fname: string | undefined = inputNewFolderName?.value;
+
+    if (!fname) { return; }
+
+    try {
+        const response = await fetch(`/folder/create?path=${path}&fname=${fname}`)
+        const row = await response.json();
+
+        toggleVisibilityRow(newFolderRow);
+        toggleVisibilityRow(backRow);
+        btnNewFolder?.classList.toggle('hidden');
+        if (inputNewFolderName) inputNewFolderName.value = '';
+
+        setTimeout(() => createTableRow(row), 500)
+
+    } catch(e) {
+        console.log(e);
+    }
+
+}
+
+function handleDismissNewFolder(): void {
+    toggleVisibilityRow(newFolderRow);
+    toggleVisibilityRow(backRow);
+    btnNewFolder?.classList.toggle('hidden');
+    if (inputNewFolderName) inputNewFolderName.value = '';
+}
+
 async function handleLoaded() {
 
     if (!fileListContainer) { return; }
 
-    const {path, back} = (fileListContainer as HTMLElement).dataset;
+   const dataset = (fileListContainer as HTMLElement).dataset;
+   path = dataset.path;
+   back = dataset.back;
+
 
     generateFileTableHeader();
     if (path !== 'home') generateFileTableBackRow(back);
-
+    generateFileTableNew();
+    
 
     fetch(`/stream?path=${path}`)
         .then(response => response.body)
@@ -163,6 +255,7 @@ async function handleLoaded() {
                     }
 
                     btnFilterHiddenFile?.addEventListener('click', handleFilterHiddenFile);
+                    btnNewFolder?.addEventListener('click', handleNewFolder);
                     handleAllFileDownloaded();
 
                     controller.close();

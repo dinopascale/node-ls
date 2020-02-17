@@ -16,6 +16,9 @@
   letter-spacing: 0.09rem;
   background: #fff;
 }
+.hidden {
+  opacity: 0;
+}
 .container {
   width: 100%;
   height: 100%;
@@ -28,16 +31,24 @@
   justify-content: space-between;
   align-items: center;
 }
+.toolbar .global-actions {
+  display: flex;
+  justify-content: space-between;
+}
 .toolbar .global-actions button {
-  background: #fff9b1;
+  background: #fff;
   border: none;
-  color: #333;
+  color: #555;
   padding: 0.75em 2em;
+  margin: 0 0.5em;
   text-transform: uppercase;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   outline: none;
+}
+.toolbar .global-actions button:last-child {
+  margin-right: 0;
 }
 .toolbar .global-actions button:hover {
   background: #fff263;
@@ -78,6 +89,7 @@
 .file-list {
   border-radius: 4px;
   margin-bottom: 40px;
+  position: relative;
 }
 .file-list .row-file {
   padding: 0.45em 0;
@@ -90,12 +102,16 @@
   border-bottom: 1px solid #dfdfdf;
   transition: all 0.2s ease-in-out;
 }
-.file-list .row-file.filtered {
+.file-list .row-file.new {
+  background: #fffde3;
+}
+.file-list .row-file.closed {
   opacity: 0;
   overflow: hidden;
   border: none;
   padding: 0;
   transition: all 0.2s ease-in-out;
+  height: 0;
 }
 .file-list .row-file .cell,
 .file-list .row-file .header {
@@ -115,6 +131,13 @@
 .file-list .row-file .name p {
   margin: 0;
 }
+.file-list .row-file .name input {
+  border: none;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+  background: #f1f1f1;
+  padding: 0.4em 0em;
+}
 .file-list .row-file .birth,
 .file-list .row-file .modified,
 .file-list .row-file .access {
@@ -131,4 +154,13 @@
 .file-list .row-file .actions a {
   color: inherit;
   font-size: 2rem;
+}
+.file-list .row-file .actions .fa-check {
+  color: green;
+  margin: 0 1em;
+  cursor: pointer;
+}
+.file-list .row-file .actions .fa-times {
+  color: red;
+  cursor: pointer;
 }
